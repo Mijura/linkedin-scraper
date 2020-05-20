@@ -51,15 +51,17 @@ for letter in letters_links:
 
         driver.get(page["href"])
 
-        elem = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[3]/ul/li/*")
-        with open('companies/'+str(l)+'/'+page["text"]+'.csv', 'w', newline='') as file:
-            writer = csv.writer(file)
-            writer.writerow(["Company name", "Linkedin"])
+        filename = 'companies/'+str(l)+'/'+page["text"]+'.csv'
+        if not os.path.exists(filename):
+            elem = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[3]/ul/li/*")
+            with open(filename, 'w', newline='') as file:
+                writer = csv.writer(file)
+                writer.writerow(["Company name", "Linkedin"])
 
-            i=1
-            for company_link in elem:
-                writer.writerow([i, company_link.text, company_link.get_attribute('href')])
-                i+=1
+                i=1
+                for company_link in elem:
+                    writer.writerow([i, company_link.text, company_link.get_attribute('href')])
+                    i+=1
 
     
 
