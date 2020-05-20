@@ -3,6 +3,8 @@ from selenium.webdriver.common.keys import Keys
 import csv
 import os
 
+if not os.path.exists('companies'):
+    os.makedirs('companies')
 
 driver = webdriver.Chrome()
 driver.get("https://www.linkedin.com/directory/companies/")
@@ -33,13 +35,13 @@ for letter in letters_links:
     print(letter)
     driver.get(letter["href"])
     l = letter["text"]
-    driver.get(letter["href"])
 
     elem = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[3]/div/ul/li/*")
 
-    print('companies/'+str(l)+'.csv')
-    
-    with open('companies/'+str(l)+'.csv', 'w', newline='') as file:
+    if not os.path.exists('companies/'+str(l)):
+        os.makedirs('companies/'+str(l))
+
+    with open('companies/'+str(l)+'/'+str(l)+'.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Company name", "Linkedin"])
 
@@ -47,7 +49,6 @@ for letter in letters_links:
         for company_link in elem:
             writer.writerow([i, company_link.text, company_link.get_attribute('href')])
             i+=1
-            #driver.get("https://www.linkedin.com/directory/companies/")
 
     
 
