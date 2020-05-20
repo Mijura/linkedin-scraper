@@ -22,15 +22,17 @@ elem.submit()
 
 letters = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[2]/div/ol/li/*")
 
-def get_company(company_link):
-    print(company_link.text)
-    print(company_link.get_attribute('href'))
-    #company_link.click()
-
-print(len(letters))
-for letter in letters:
-    l = letter.text
-    letter.click()
+i = 0
+letters_links=[]
+while(i<len(letters)):
+    letters_links.append({"text": letters[i]. text, "href": letters[i].get_attribute('href')})
+    i+=1
+print(letters_links)
+for letter in letters_links:
+    print(letter)
+    driver.get(letter["href"])
+    l = letter["text"]
+    letter["href"].click()
 
     elem = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[3]/div/ul/li/*")
 
@@ -41,7 +43,6 @@ for letter in letters:
 
         i=1
         for company_link in elem:
-            #get_company(company_link)
             writer.writerow([i, company_link.text, company_link.get_attribute('href')])
             i+=1
             #driver.get("https://www.linkedin.com/directory/companies/")
