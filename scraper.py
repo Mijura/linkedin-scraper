@@ -27,17 +27,19 @@ letters_links=[]
 while(i<len(letters)):
     letters_links.append({"text": letters[i]. text, "href": letters[i].get_attribute('href')})
     i+=1
+
 print(letters_links)
 for letter in letters_links:
     print(letter)
     driver.get(letter["href"])
     l = letter["text"]
-    letter["href"].click()
+    driver.get(letter["href"])
 
     elem = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[3]/div/ul/li/*")
 
+    print('companies/'+str(l)+'.csv')
     
-    with open('companies/'+l+'.csv', 'w', newline='') as file:
+    with open('companies/'+str(l)+'.csv', 'w', newline='') as file:
         writer = csv.writer(file)
         writer.writerow(["Company name", "Linkedin"])
 
