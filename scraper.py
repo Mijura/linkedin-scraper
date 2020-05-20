@@ -1,0 +1,52 @@
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+import csv
+import os
+
+
+driver = webdriver.Chrome()
+driver.get("https://www.linkedin.com/directory/companies/")
+elem = driver.find_elements_by_class_name("form-toggle")
+elem[1].click()
+
+elem = driver.find_element_by_id("login-email")
+elem.send_keys("miodragvilotijevic@gmail.com")
+
+
+elem = driver.find_element_by_id("login-password")
+elem.send_keys(os.environ['link'])
+
+
+elem = driver.find_element_by_id("login-submit")
+elem.submit()
+
+letters = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[2]/div/ol/li/*")
+
+def get_company(company_link):
+    print(company_link.text)
+    print(company_link.get_attribute('href'))
+    #company_link.click()
+
+print(len(letters))
+for letter in letters:
+    l = letter.text
+    letter.click()
+
+    elem = driver.find_elements_by_xpath("//*[@id=\"seo-dir\"]/div/div[3]/div/ul/li/*")
+
+    
+    with open('companies/'+l+'.csv', 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(["Company name", "Linkedin"])
+
+        i=1
+        for company_link in elem:
+            #get_company(company_link)
+            writer.writerow([i, company_link.text, company_link.get_attribute('href')])
+            i+=1
+            #driver.get("https://www.linkedin.com/directory/companies/")
+
+    
+
+driver.close()
+
